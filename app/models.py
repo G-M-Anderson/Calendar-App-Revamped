@@ -2,6 +2,11 @@ from datetime import datetime
 from app import db
 from flask_login import UserMixin
 
+class Connection(db.Model):
+    __tablename__ = 'connections'
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    friend_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    connected_at = db.Column(db.DateTime, default=datetime.utcnow)
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -25,8 +30,4 @@ class Event(db.Model):
     end_time = db.Column(db.DateTime, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
-class Connection(db.Model):
-    __tablename__ = 'connections'
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-    friend_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-    connected_at = db.Column(db.DateTime, default=datetime.utcnow)
+
